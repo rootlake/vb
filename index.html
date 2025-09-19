@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>VB Lineup</title>
+        <meta name="description" content="">
+
+			<link rel="stylesheet" type="text/css" href="assets/css/jquery.gridster.css">
+			<link rel="stylesheet" type="text/css" href="assets/css/styles.css">
+		
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		        <script src="./dist/jquery.gridster.js"></script>
+		        <link rel="stylesheet" href="./dist/jquery.gridster.min.css">
+		
+        <script type="text/javascript">
+            var gridster = "";
+            $(document).ready(function () {
+                $(".gridster ul").gridster({
+                    widget_margins: [10, 10],
+                    widget_base_dimensions: [200, 200],
+                    shift_larger_widgets_down: false
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="gridster">
+          <!--<ul style="height: 480px; position: relative; ">
+			<li class="blank" data-row="1" data-col="1" data-sizex="1" data-sizey="1"></li>
+			<li data-row="1" data-col="2" data-sizex="1" data-sizey="1"><h1>--</h1><h2>Front<br>Center</h2></li>
+			<li class="blank" data-row="1" data-col="3" data-sizex="1" data-sizey="1"></li>
+			<li class="blank" data-row="2" data-col="1" data-sizex="1" data-sizey="1"></li>
+			<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><h1>--</h1><h2>Back<br>Center</h2></li>
+			<li class="blank" data-row="2" data-col="3" data-sizex="1" data-sizey="1"></li>
+			<li class="blank" data-row="2" data-col="4" data-sizex="1" data-sizey="1"></li>
+			<li class="blank" data-row="3" data-col="1" data-sizex="1" data-sizey="1"></li>
+			<li class="blank" data-row="3" data-col="2" data-sizex="1" data-sizey="1"></li>
+			<li class="blank" data-row="3" data-col="3" data-sizex="1" data-sizey="1"></li>
+			<li class="blank" data-row="3" data-col="4" data-sizex="1" data-sizey="1"></li>
+			<li data-row="4" data-col="1" data-sizex="1" data-sizey="1"><h1>5</h1><h2>Anna<br>Finnigan</h2></li>
+			<li data-row="4" data-col="2" data-sizex="1" data-sizey="1"><h1>6</h1><h2>Mika<br>Ha</h2></li>
+			<li data-row="4" data-col="3" data-sizex="1" data-sizey="1"><h1>8</h1><h2>Annette<br>Chinodakufa</h2></li>
+			<li data-row="4" data-col="4" data-sizex="1" data-sizey="1"><h1>11</h1><h2>Mimi<br>Somerville</h2></li>
+			<li data-row="5" data-col="1" data-sizex="1" data-sizey="1"><h1>12</h1><h2>Sophia<br>Schoenrock</h2></li>
+			<li data-row="5" data-col="2" data-sizex="1" data-sizey="1"><h1>13</h1><h2>Julia<br>Cui</h2></li>
+			<li data-row="5" data-col="3" data-sizex="1" data-sizey="1"><h1>14</h1><h2>Camila<br>Stewart</h2></li>
+			<li data-row="5" data-col="4" data-sizex="1" data-sizey="1"><h1>15</h1><h2>Bella<br>Weinhardt</h2></li>
+			<li data-row="6" data-col="1" data-sizex="1" data-sizey="1"><h1>17</h1><h2>Ava<br>Chen</h2></li>
+			<li data-row="6" data-col="2" data-sizex="1" data-sizey="1"><h1>22</h1><h2>Sofia<br>Vasquez</h2></li>
+			<li data-row="6" data-col="3" data-sizex="1" data-sizey="1"><h1>23</h1><h2>Ameena<br>Owens</h2></li>
+			<li data-row="6" data-col="4" data-sizex="1" data-sizey="1"><h1>29</h1><h2>Grace<br>Onyemakonor</h2></li>
+			<li data-row="7" data-col="1" data-sizex="1" data-sizey="1"><h1>36</h1><h2>Alice<br>Zhao</h2></li>
+
+		</ul>
+        </div>
+</body>
+</html>

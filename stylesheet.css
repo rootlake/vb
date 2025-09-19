@@ -1,0 +1,20 @@
+td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+td div {
+    height:100px;
+    width:100px;
+	padding: 5px;
+    background-color:#DDD;
+    border: 1px solid black;
+
+
+}
+
+
+
+display: flex;
+justify-content: center;
+align-items: center;
