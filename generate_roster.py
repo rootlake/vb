@@ -39,26 +39,40 @@ def update_html_with_roster(template_file, output_file, players):
     player_html_list = []
 
     # Add blank positions for court layout (rows 1-3)
+    # Court uses 3 columns. Row 1 keeps col 3 for Bella (front right), so we only add blanks for col 1-2 on row 1.
     blank_positions = [
         '<li class="blank" data-row="1" data-col="1" data-sizex="1" data-sizey="1"></li>',
-        '<li data-row="1" data-col="2" data-sizex="1" data-sizey="1"><h1>--</h1><h2>Front<br>Center</h2></li>',
-        '<li class="blank" data-row="1" data-col="3" data-sizex="1" data-sizey="1"></li>',
+        '<li class="blank" data-row="1" data-col="2" data-sizex="1" data-sizey="1"></li>',
+        # row 1, col 3 reserved for Bella
         '<li class="blank" data-row="2" data-col="1" data-sizex="1" data-sizey="1"></li>',
-        '<li data-row="2" data-col="2" data-sizex="1" data-sizey="1"><h1>--</h1><h2>Back<br>Center</h2></li>',
+        '<li class="blank" data-row="2" data-col="2" data-sizex="1" data-sizey="1"></li>',
         '<li class="blank" data-row="2" data-col="3" data-sizex="1" data-sizey="1"></li>',
-        '<li class="blank" data-row="2" data-col="4" data-sizex="1" data-sizey="1"></li>',
         '<li class="blank" data-row="3" data-col="1" data-sizex="1" data-sizey="1"></li>',
         '<li class="blank" data-row="3" data-col="2" data-sizex="1" data-sizey="1"></li>',
         '<li class="blank" data-row="3" data-col="3" data-sizex="1" data-sizey="1"></li>',
-        '<li class="blank" data-row="3" data-col="4" data-sizex="1" data-sizey="1"></li>',
     ]
 
     player_html_list.extend(blank_positions)
 
-    # Add players starting from row 4
+    # Find Bella Weinhardt (#15) and place her in front right position (row 1, col 4)
+    bella_player = None
+    other_players = []
+
+    for player in players:
+        if player["number"] == "15" and "Bella" in player["first_name"]:
+            bella_player = player
+        else:
+            other_players.append(player)
+
+    # Add Bella to front right (row 1, col 3) if found
+    if bella_player:
+        bella_html = f'<li data-row="1" data-col="3" data-sizex="1" data-sizey="1"><h1>{bella_player["number"]}</h1><h2>{bella_player["first_name"]}<br>{bella_player["last_name"]}</h2></li>'
+        player_html_list.append(bella_html)
+
+    # Add remaining 12 players starting from row 4 in a neat 3x4 grid
     row = 4
     col = 1
-    for player in players:
+    for player in other_players:
         player_html = f'<li data-row="{row}" data-col="{col}" data-sizex="1" data-sizey="1"><h1>{player["number"]}</h1><h2>{player["first_name"]}<br>{player["last_name"]}</h2></li>'
         player_html_list.append(player_html)
 
@@ -70,11 +84,24 @@ def update_html_with_roster(template_file, output_file, players):
     # Join all player HTML
     new_player_html = '\n\t\t\t'.join(player_html_list)
 
-    # Replace the content between <ul> and </ul> tags
-    pattern = r'(<ul[^>]*>)(.*?)(</ul>)'
-    replacement = f'\\1\n\t\t\t{new_player_html}\n\n\t\t\\3'
+    # Add NET line if not present
+    if 'NET' not in html_content:
+        # Add NET line before gridster div
+        net_line = '''        <div style="text-align: center; margin: 20px 0; font-family: monospace; font-size: 18px;">
+            ═══════════════════ NET ═══════════════════
+        </div>'''
+        html_content = html_content.replace('<div class="gridster">', f'{net_line}\n        <div class="gridster">')
 
-    updated_html = re.sub(pattern, replacement, html_content, flags=re.DOTALL)
+    # Replace content between the first real <ul> after the gridster div and its closing </ul>
+    # This avoids matching a commented-out <ul> in the template.
+    pattern = r'(<div class="gridster">[\s\S]*?)(?<!<!--)(<ul[^>]*>)([\s\S]*?)(</ul>)'
+    replacement = f'\\1\\2\n\t\t\t{new_player_html}\n\n\t\t\\4'
+
+    updated_html, count = re.subn(pattern, replacement, html_content, flags=re.DOTALL)
+    if count == 0:
+        # Fallback: replace the last <ul> block in the file
+        pattern_last = r'(.*)(<ul[^>]*>)([\s\S]*)(</ul>)([\s\S]*)'
+        updated_html = re.sub(pattern_last, f'\\1\\2\n\t\t\t{new_player_html}\n\n\t\t\\4\\5', html_content, flags=re.DOTALL)
 
     # Write the updated HTML
     with open(output_file, 'w', encoding='utf-8') as file:
